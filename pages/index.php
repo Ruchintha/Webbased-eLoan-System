@@ -45,9 +45,9 @@ if (!isset($_SESSION['id'])) {
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <h1> &nbsp <span style="font-size:140%; color:#337AB7"><i>e</i></span>Loan
+                <h1> &nbsp; <span style="font-size:140%; color:#337AB7"><i>e</i></span>Loan
                     <small>
-                        &nbsp Loan Mangament System
+                        &nbsp; Loan Mangament System
                     </small>
                 </h1>
             </div>
