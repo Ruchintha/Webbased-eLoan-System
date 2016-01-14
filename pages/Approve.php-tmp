@@ -1,0 +1,15 @@
+<?php session_start();
+if (!isset($_SESSION['id'])) {
+	header("location:login.php");
+}
+
+require_once 'database.php';
+$approve = $_GET['id'];
+
+$sql = "INSERT INTO `Loan_Application`(`id`, `loan_amount`, `repayment_period`, `loan_type`, `purpose`, `security_offered`, `title`, `name`, `fname`, `dob`, `age`, `marital_stat`, `gender`, `nationality`, `nic`, `dependants`, `academic`, `professional`, `field`, `address`, `period_address`, `mobile_number`, `fixed_line`, `email`, `emp_name`, `off_address`, `office_number`, `industry`, `sector`, `designation`, `experience`, `salary`, `other_income`, `total`, `loan_repayment`, `household`, `other`, `total_exp`, `security_type`, `description`, `market_value`, `any_other_loans`, `guarantors_one_name`, `guarantors_one_fname`, `guarantors_one_address`, `guarantors_one_number`, `guarantors_one_nic`, `guarantors_one_sector`, `guarantors_one_emp_name`, `guarantors_one_off_address`, `guarantors_one_off_number`, `guarantors_one_industry`, `guarantors_one_designation`, `guarantors_one_assets`, `guarantors_two_name`, `guarantors_two_fname`, `guarantors_two_address`, `guarantors_two_number`, `guarantors_two_nic`, `guarantors_two_sector`, `guarantors_two_emp_name`, `guarantors_two_off_address`, `guarantors_two_off_number`, `guarantors_two_industry`, `guarantors_two_designation`, `guarantors_two_assets`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9],[value-10],[value-11],[value-12],[value-13],[value-14],[value-15],[value-16],[value-17],[value-18],[value-19],[value-20],[value-21],[value-22],[value-23],[value-24],[value-25],[value-26],[value-27],[value-28],[value-29],[value-30],[value-31],[value-32],[value-33],[value-34],[value-35],[value-36],[value-37],[value-38],[value-39],[value-40],[value-41],[value-42],[value-43],[value-44],[value-45],[value-46],[value-47],[value-48],[value-49],[value-50],[value-51],[value-52],[value-53],[value-54],[value-55],[value-56],[value-57],[value-58],[value-59],[value-60],[value-61],[value-62],[value-63],[value-64],[value-65],[value-66])"
+if (mysqli_query($conn, $sql)) {
+	header("location:loanapproval.php")
+
+	;
+}
+?>

@@ -1,0 +1,509 @@
+<?php session_start();
+require_once 'database.php';
+if (!isset($_SESSION['id'])) {
+	header("location:login.php");
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>eLoan - Loan Mangement System</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Date Picker -->
+    <link href="../dist/css/datepicker.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<style>
+		.nav-tabs{
+
+			border: 3px solid #337AB7;
+			border-top-left-radius: 6px;
+			border-top-right-radius: 6px;
+			padding-top:10px;
+			padding-bottom:1px;
+		}
+		.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+			background-color: #337AB7;
+			color: white;
+		}
+
+	</style>
+
+</head>
+<body>
+
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <h1> &nbsp <span style="font-size:140%; color:#337AB7"><i>e</i></span>Loan
+                    <small>
+                        &nbsp Loan Mangament System
+                    </small>
+                </h1>
+            </div>
+            <div>
+                <span style="font-size:100%; color:#337AB7;"><p></p>
+                <p class="bg-primary" align="right"><?php echo "Logged in as ".$_SESSION['id']."&nbsp &nbsp &nbsp &nbsp &nbsp";?></p></span>
+                <a class="col-lg-offset-7 col-md-offset-5 btn btn btn-outline btn-md btn-warning" type="button" href="logout.php">Logout</a>
+                <p></p>
+                <p align="right" class="text-primary bg-primary" id="time"></p>
+            </div>
+            <!-- /.navbar-header -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="index.php"><i class="glyphicon glyphicon-home"></i>&nbsp Welcome Screen</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> Administration<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="Register.php"> User Registration</a>
+                                </li>
+                                <!--<li>
+                                    <a href="accessgroups.php"> Define Access Groups</a>
+                                </li>
+                                <li>
+                                    <a href="groupmembers.php"> Define Group Members</a>
+                                </li>
+                                <li>
+                                    <a href="groupprivileges.php"> Define Group Privilages</a>
+                                </li>  -->
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Reference<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="OfficerTypes.php">Officer Types</a>
+                                </li>
+                                <li>
+                                    <a href="LoanTypes.php">Loan Types</a>
+                                </li>
+                                <li>
+                                    <a href="CountryStructure.php">Country Structure</a>
+                                </li>
+                                <li>
+                                    <a href="ApplicationStatus.php">Application Status</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-user fa-fw"></i> Front Office<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="ClientRegistration.php">Client Registration</a>
+                                </li>
+                                <li>
+                                    <a href="TrialCalculator.php">Trial Calculator</a>
+                                </li>
+                                <li>
+                                    <a href="LoanApplication.php">Loan Applications</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-briefcase fa-fw"></i> Buisiness Flow<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="LoanApproval.php">Loan Approvals</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-info-circle fa-fw"></i> Information Center<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="PipelineStatus.php">Loan Application Pipeline Status</a>
+                                </li>
+                                <li>
+                                    <a href="RepaymentSchedule.php">Loan Repayment Schedule</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Report Center<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="ApplicationPipeline.php">Loan Application Pipeline</a>
+                                </li>
+                                <li>
+                                    <a href="RepaymentReport.php">Loan Repayment Schedule</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- Page Content -->
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <span style="color:#337AB7"><h1 class="page-header">Front Office >
+                            <small>
+                                Client Registration
+                            </small>
+                        </h1></span>
+                    </div>
+						<div class="panel-body">
+                            <!-- Nav tabs -->
+
+                            <ul class="nav nav-tabs ">
+                                <li class="col-sm-offset-1"><a aria-expanded="true" href="#individual" data-toggle="tab">Individual -Registration</a>
+                                </li>
+                                <li class=""><a aria-expanded="false" href="#cooperate" data-toggle="tab">Cooperate -Registration</a>
+                                </li>
+                                <a class="btn btn-primary col-lg-offset-4 col-md-offset-2" href="view.php" ><i class="fa fa-table "></i> &nbsp &nbsp View &nbsp</a>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+								<div class="tab-pane fade active in" id="individual">
+                                    <h4></h4>
+<?php
+require_once 'database.php';
+
+if (isset($_POST['submit'])) {
+
+	$status                  = $_POST['status'];
+	$title                   = $_POST['title'];
+	$name                    = $_POST['name'];
+	$fname                   = $_POST['fname'];
+	$lname                   = $_POST['lname'];
+	$company_name            = $_POST['company_name'];
+	$company_registration_no = $_POST['company_registration_no'];
+	$dob                     = $_POST['dob'];
+	$gender                  = $_POST['gender'];
+	$marital_stat            = $_POST['marital_stat'];
+	$nic                     = $_POST['nic'];
+	$passport_no             = $_POST['passport_no'];
+	$driving_license         = $_POST['driving_license'];
+	$address                 = $_POST['address'];
+	$business_address        = $_POST['business_address'];
+	$tel1                    = $_POST['tel1'];
+	$tel2                    = $_POST['tel2'];
+	$email                   = $_POST['email'];
+	$security_type           = $_POST['security_type'];
+	$description             = $_POST['description'];
+	$market_value            = $_POST['market_value'];
+
+	$sql = "INSERT INTO Client_Registration(status,title,name,fname,lname,company_name,company_registration_no,dob,gender,marital_stat,nic,passport_no,driving_license,address,business_address,tel1,tel2,email,security_type,description,market_value)
+		VALUES ('".$_POST['status']."','".$_POST['title']."','".$_POST['name']."','".$_POST['fname']."','".$_POST['lname']."','".$_POST['company_name']."','".$_POST['company_registration_no']."','".$_POST['dob']."','".$_POST['gender']."','".$_POST['marital_stat']."','".$_POST['nic']."','".$_POST['passport_no']."','".$_POST['driving_license']."','".$_POST['address']."','".$_POST['business_address']."','".$_POST['tel1']."','".$_POST['tel2']."','".$_POST['email']."','".$_POST['security_type']."','".$_POST['description']."','".$_POST['market_value']."') ";
+
+	if (mysqli_query($conn, $sql)) {
+		echo '<div class="alert alert-block alert-success">
+            <i class="fa fa-check green"></i>
+            &nbsp; Created successfully
+        </div>';
+	} 
+    else
+    {
+		echo '<div class="alert alert-block alert-danger">error:<br>
+		<i class="fa fa-remove red"></i>
+		 &nbsp; Failed to Create New Entry
+		</div>';
+	}
+}
+mysqli_close($conn);
+?>
+<p><form id="individual" name="individual" method="POST" action="ClientRegistration.php" class="form-horizontal col-md-9 col-md-offset-2">
+				                            <fieldset>
+				                               	<br/>
+				   	                            <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Title</label>
+				                                    <div class="col-sm-3 col-lg-2">
+				                                    	<select class="form-control" name="title">
+                                                		<option value="Mrs.">Mrs.</option>
+                                                		<option value="Mr.">Mr.</option>
+                                                		<option value="Miss.">Miss</option>
+                                                		<option value="Rev.">Rev.</option>
+                                                		<option value="Dr.">Dr.</option>
+                                            		</select>
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Name With Initials</label>
+				                                    <div class="col-lg-5 col-sm-6">
+				                                        <input type="text" name="name" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">First Name</label>
+				                                    <div class="col-sm-5 col-lg-4">
+				                                        <input type="text" name="fname" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Last Name</label>
+				                                    <div class="col-sm-5 col-lg-4">
+				                                        <input type="text" name="lname" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Date Of Birth</label>
+				                                    <div class="input-group date col-sm-4 col-lg-3" data-provide="datepicker">
+                                                        <input type="text" name="dob" class="form-control" data-date-format="yyyy/mm/dd">
+                                                    <div class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-th"></span>
+                                                    </div>
+                                                </div>
+				                                </div>
+
+
+				                                <div class="form-group">
+					                                <div class="radio">
+					                                <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Gender</label>
+														<label class="radio-inline">
+															<input value="Male" name="gender" class="ace" type="radio">
+															<span class="lbl">  Male</span>
+														</label>
+														<label class="radio-inline">
+															<input value="Female" name="gender" class="ace" type="radio">
+															<span class="lbl">  Female</span>
+														</label>
+													</div>
+												</div>
+
+												<div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Marital Status</label>
+				                                    <div class="col-sm-3 col-lg-2">
+				                                    	<select class="form-control" name="marital_stat">
+                                                		<option value="Single">Single</option>
+                                                		<option value="Married">Married</option>
+                                            		</select>
+				                                    </div>
+				                                </div>
+
+												<div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">NIC number</label>
+				                                    <div class="col-sm-4 col-lg-3">
+				                                        <input type="text" name="nic" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Passport Number</label>
+				                                    <div class="col-sm-4 col-lg-3">
+				                       	                <input type="text" name="passport_no" class="form-control"/>
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Driving License Number</label>
+				                                    <div class="col-sm-4 col-lg-3">
+				                       	                <input type="text" name="driving_license" class="form-control"/>
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Permanent Address</label>
+				                                    <div class="col-sm-5">
+				                       	                <textarea type="text" name="address" class="form-control"  /></textarea>
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Contact Number</label>
+				                                    <div class="col-sm-4 col-lg-3">
+				                       	                <input type="text" name="tel1" class="form-control"  />
+				                                    </div>
+				                                    <div class="col-sm-4 col-lg-3 col-sm-offset-4">
+			                       	                <input type="text" name="tel2" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">E-Mail Address</label>
+				                                    <div class="col-sm-6 col-lg-5">
+				                       	                <input type="email" name="email" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Security Type</label>
+				                                    <div class="col-sm-5">
+				                       	                <input type="text" name="security_type" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Description</label>
+				                                    <div class="col-sm-5">
+				                       	                <textarea type="text" name="description" class="form-control"> </textarea>
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Market Value</label>
+				                                    <div class="col-sm-5">
+				                       	                <input type="text" name="market_value" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                    <br/>
+				                                <div>
+				                              		<input type="hidden" name="status" value="Individual"></input>
+				                                    <button type="submit" name="submit" value="submit" class="col-sm-offset-2 col-sm-4 btn btn-outline btn-md btn-success">Register</button>
+				                                    <button type="reset" class="col-sm-3 col-sm-offset-1 btn btn-outline btn-md btn-warning">Reset</button>
+				                              	</div>
+				                            </fieldset>
+				                            <br/>
+				                            <br/>
+				                        </form></p>
+
+                                </div>
+                                <div class="tab-pane fade" id="cooperate">
+                                    <h4></h4>
+                                    	<p><form id="cooperate" name="" method="POST" action="ClientRegistration.php" class="form-horizontal col-md-9 col-md-offset-2">
+				                            <fieldset>
+				                               	<br/>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Company Name</label>
+				                                    <div class="col-sm-6">
+				                                        <input type="text" name="company_name" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Company Registration Number</label>
+				                                    <div class="col-sm-4">
+				                                        <input type="text" name="company_registration_no" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+			                                	<div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Business Address</label>
+				                                    <div class="col-sm-5">
+				                       	                <textarea type="text" name="business_address" class="form-control"  /></textarea>
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Contact Numbers</label>
+				                                    <div class="col-sm-4 col-lg-3">
+				                       	                <input type="text" name="tel1" class="form-control"  />
+				                                    </div>
+				                                    <div class="col-sm-4 col-lg-3 col-sm-offset-4">
+			                       	                <input type="text" name="tel2" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">E-Mail Address</label>
+				                                    <div class="col-sm-6 col-lg-5">
+				                       	                <input type="email" name="email" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Security Type</label>
+				                                    <div class="col-sm-4">
+				                       	                <input type="text" name="security_type" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Description</label>
+				                                    <div class="col-sm-5">
+				                       	                <textarea type="text" name="description" class="form-control"  /></textarea>
+				                                    </div>
+				                                </div>
+
+				                                <div class="form-group">
+				                                    <label style="font-weight:200" class="col-sm-4 control-label no-padding-right">Market Value</label>
+				                                    <div class="col-sm-5">
+				                       	                <input type="text" name="market_value" class="form-control"  />
+				                                    </div>
+				                                </div>
+
+				                                    <br/>
+				                                <div>
+				                                	<input type="hidden" name="status" value="cooperate" >
+				                                    <button type="submit" name="submit" value="submit" class="col-sm-offset-2 col-sm-4 btn btn-outline btn-md btn-success">Register</button>
+				                                    <button type="reset" class="col-sm-3 col-sm-offset-1 btn btn-outline btn-md btn-warning">Reset</button>
+				                              	</div>
+				                            </fieldset>
+				                            <br/>
+				                            <br/>
+				                        </form></p>
+
+                                </div>
+                            </div>
+                        </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Date Picker -->
+    <script src="../js/bootstrap-datepicker.js"></script>
+    <script> $('.datepicker').datepicker()
+    </script>
+
+    <script src="../dist/js/date.js"></script>
+
+    <script>
+        window.onload = function () {
+            startTime();
+        }
+    </script>
+
+</body>
+
+</html>
